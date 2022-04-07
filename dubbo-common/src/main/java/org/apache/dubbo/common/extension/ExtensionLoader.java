@@ -432,7 +432,7 @@ public class ExtensionLoader<T> {
         // getOrCreateHolder()方法中封装了查找cachedInstances缓存的逻辑
         final Holder<Object> holder = getOrCreateHolder(name);
         Object instance = holder.get();
-        if (instance == null) { // double-check防止并发问题
+        if (instance == null) { // 第一次调用为空
             synchronized (holder) {
                 instance = holder.get();
                 if (instance == null) {

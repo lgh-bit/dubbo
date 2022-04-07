@@ -205,6 +205,7 @@ public class RegistryProtocol implements Protocol {
         final OverrideListener overrideSubscribeListener = new OverrideListener(overrideSubscribeUrl, originInvoker);
         overrideListeners.put(overrideSubscribeUrl, overrideSubscribeListener);
 
+        // 这里会变为dubbo协议，进而触发Protocol$Adaptive里包装DubboProtocol，触发DubboProtocol的export
         providerUrl = overrideUrlWithConfig(providerUrl, overrideSubscribeListener);
         //export invoker
         // 导出服务，底层会通过会执行DubboProtocol.export()方法，启动对应的Server
@@ -257,7 +258,7 @@ public class RegistryProtocol implements Protocol {
 
         return (ExporterChangeableWrapper<T>) bounds.computeIfAbsent(key, s -> {
             Invoker<?> invokerDelegate = new InvokerDelegate<>(originInvoker, providerUrl);
-            // 使用
+            // 使用 protocol.export(invokerDelegate)，触发触发DubboProtocol的export
             return new ExporterChangeableWrapper<>((Exporter<T>) protocol.export(invokerDelegate), originInvoker);
         });
     }

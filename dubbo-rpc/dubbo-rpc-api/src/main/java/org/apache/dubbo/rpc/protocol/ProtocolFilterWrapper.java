@@ -154,7 +154,8 @@ public class ProtocolFilterWrapper implements Protocol {
         if (UrlUtils.isRegistry(invoker.getUrl())) {
             return protocol.export(invoker);
         }
-        return protocol.export(buildInvokerChain(invoker, SERVICE_FILTER_KEY, CommonConstants.PROVIDER));
+        Invoker<T> tInvoker = buildInvokerChain(invoker, SERVICE_FILTER_KEY, CommonConstants.PROVIDER);
+        return protocol.export(tInvoker);
     }
 
     @Override
